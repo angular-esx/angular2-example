@@ -1,0 +1,6 @@
+﻿.note.modal{
+    max-height: initial;
+}
+.note.modal textarea{
+    max-height: 3rem;
+}

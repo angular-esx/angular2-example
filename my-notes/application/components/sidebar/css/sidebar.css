@@ -1,0 +1,18 @@
+﻿.side-nav li {
+    padding: initial;
+    background-color: initial;
+    border-bottom: 1px solid #e0e0e0;
+}
+.side-nav li:hover, .side-nav li.active {
+    background-color: #ee6e73;
+}
+.side-nav li>a{
+    display: flex;
+}
+.side-nav li:hover a, .side-nav li.active a {
+    color: #ffffff;
+    background-color: initial;
+}
+.side-nav li>a>span:first-child{
+    flex-grow: 1;
+}

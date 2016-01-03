@@ -1,0 +1,26 @@
+﻿.notebook-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.notebook-item-info {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.notebook-action {
+    margin-left: 30px;
+    color: #26a69a;
+    cursor: pointer;
+}
+
+
+.notebook.fab-right-bottom {
+    bottom: 45px; 
+    right: 24px;
+}
+.notebook.fab-right-bottom>a.btn-floating, 
+.notebook.fab-right-bottom>a.btn-large{
+    background-color: #ee6e73;
+}
