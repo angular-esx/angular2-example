@@ -1,0 +1,35 @@
+﻿<div id="noteModal" class="note modal">
+    <div class="modal-content">
+        <h4>New note</h4>
+        <div class="row">
+            <form class="col s12">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input id="noteTitleInput" type="text" length="10" [(ngModel)]="note.title">
+                        <label for="noteTitleInput">Title</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <select [(ngModel)]="note.notebookId">
+                            <option *ngFor="#notebook of notebooks" [value]="notebook.id">{{notebook.title}}</option>
+                        </select>
+                        <label>Notebook</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea id="noteDescriptionInput" class="materialize-textarea" length="50" [(ngModel)]="note.description"></textarea>
+                        <label for="noteDescriptionInput">Description</label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-action waves-effect waves-green btn-flat" (click)="save()">Save</a>
+        <a class="modal-action modal-close waves-effect waves-green btn-flat">Cancel</a>
+    </div>
+</div>

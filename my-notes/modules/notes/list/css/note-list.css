@@ -1,0 +1,25 @@
+﻿.note-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.note-item-info {
+    flex-grow: 1;
+    cursor: pointer;
+}
+
+.note-action {
+    margin-left: 30px;
+    color: #26a69a;
+    cursor: pointer;
+}
+
+.note.fab-right-bottom {
+    bottom: 45px; 
+    right: 24px;
+}
+.note.fab-right-bottom>a.btn-floating, 
+.note.fab-right-bottom>a.btn-large{
+    background-color: #ee6e73;
+}

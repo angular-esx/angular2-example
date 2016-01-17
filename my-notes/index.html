@@ -1,0 +1,63 @@
+﻿<!doctype html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A demo Angular 2 with ES5">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+    <base href="/">
+
+    <title>My Note</title>
+
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+  </head>
+
+  <body>
+    <my-notes-app></my-notes-app> 
+
+    <link rel="stylesheet" href="application/components/navbar/css/navbar.css">
+    <link rel="stylesheet" href="application/components/sidebar/css/sidebar.css">
+    <link rel="stylesheet" href="modules/notebooks/list/css/notebook-list.css">
+    <link rel="stylesheet" href="modules/notes/list/css/note-list.css">
+    <link rel="stylesheet" href="modules/notes/detail/css/note-detail.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
+	
+    <script src="node_modules/angular2/bundles/angular2-polyfills.js"></script>
+    <script src="node_modules/rxjs/bundles/Rx.umd.js"></script>
+    <script src="node_modules/angular2/bundles/angular2-all.umd.js"></script>
+    <script src="node_modules/es6-shim/es6-shim.js"></script>
+
+    <script src="application/services/my-notes-store.service.js"></script>
+    <script src="application/components/navbar/navbar.component.js"></script>
+    <script src="application/components/sidebar/sidebar.component.js"></script>
+    <script src="modules/notebooks/detail/notebook-detail.module.js"></script>
+    <script src="modules/notes/detail/note-detail.module.js"></script>
+    <script src="modules/notebooks/list/notebook-list.module.js"></script>
+    <script src="modules/notes/list/note-list.module.js"></script>
+    <script src='application/my-notes.app.js'></script>
+    <script src='application/boot.js'></script> 
+
+        <!--<script type="text/javascript">
+        $(document).ready(function () {
+            $('select').material_select();
+
+            $(".button-collapse").sideNav();
+
+            $('#addNotebook').leanModal({
+                dismissible: false,
+            });
+
+            $('#addNote').leanModal({
+                dismissible: false,
+            });
+        });
+    </script>-->
+
+  </body>
+</html>

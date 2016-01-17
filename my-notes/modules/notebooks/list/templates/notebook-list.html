@@ -1,0 +1,30 @@
+﻿<ul class="collection">
+    <li class="collection-item notebook-item" *ngFor="#notebook of notebooks">
+        <div class="notebook-item-info">
+            <h5 class="title">{{notebook.title}}</h5>
+            <h6>{{notebook.totalNotes}} Notes</h6>
+        </div>
+        <div>
+            <a class="notebook-action"><i class="material-icons">mode_edit</i></a>
+            <a class="notebook-action" (click)="remove(notebook)"><i class="material-icons">delete</i></a>
+        </div>
+    </li>
+</ul>
+
+<notebook-detail></notebook-detail>
+
+<note-detail></note-detail>
+
+<div class="fixed-action-btn horizontal click-to-toggle notebook fab-right-bottom">
+    <a class="btn-floating btn-large">
+        <i class="large material-icons">add</i>
+    </a>
+    <ul>
+        <li class="tooltipped" data-position="top" data-delay="50" data-tooltip="Add notebook">
+            <a id="addNotebook" href="#notebookModal" class="btn-floating red"><i class="material-icons">library_add</i></a>
+        </li>
+        <li class="tooltipped" data-position="top" data-delay="50" data-tooltip="Add note">
+            <a id="addNote" href="#noteModal" class="btn-floating blue"><i class="material-icons">note_add</i></a>
+        </li>
+    </ul>
+</div>

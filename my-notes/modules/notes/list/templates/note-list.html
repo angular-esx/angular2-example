@@ -1,0 +1,20 @@
+﻿<ul class="collection">
+    <li class="collection-item note-item" *ngFor="#note of notes">
+        <div class="note-item-info">
+            <h5 class="title">{{note.title}}</h5>
+            <h6>{{note.description}}</h6>
+        </div>
+        <div>
+            <a class="note-action"><i class="material-icons">mode_edit</i></a>
+            <a class="note-action" (click)="remove(note)"><i class="material-icons">delete</i></a>
+        </div>
+    </li>
+</ul>
+
+<note-detail></note-detail>
+
+<div class="fixed-action-btn horizontal click-to-toggle note fab-right-bottom">
+    <a id="addNote" href="#noteModal" class="btn-floating btn-large">
+        <i class="large material-icons">add</i>
+    </a>
+</div>
