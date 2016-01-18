@@ -57,9 +57,9 @@
         var directionLeft = true;
 
         manager.on('pan', function (e) {
-          if(directionLeft && transform < 0){
+          if(directionLeft){
             transform = -200 + e.deltaX;
-          }else if(!directionLeft && transform > -200){
+          }else if(!directionLeft){
             transform = e.deltaX;
           }
 
