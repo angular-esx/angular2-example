@@ -30,17 +30,14 @@
         transition: transform 0.3s ease-out;
       }
       .swipe-actions{
-          text-align: right;
+        text-align: right;
         color: white;
-          background-color: orangered;
+        background-color: orangered;
         position: absolute;
         top: 0px;
         right: 0px;
         width: 80%;
         height: 100%;
-      }
-      .swiped {
-        transform: translateX(-80%);
       }
     `]
   })
@@ -52,19 +49,40 @@
       for (var i = 0; i < elements.length; i++) {
         manager = new Hammer.Manager(elements[i], {
           recognizers: [
-              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL }],
+              [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
           ]
         });
 
-        manager.on('swipeleft', function (e) {
-          e.target.className = 'swipe-content swiped';
+        var transform = 0;
+        var directionLeft = true;
+
+        manager.on('pan', function (e) {
+          if(directionLeft && transform < 0){
+            transform = -200 + e.deltaX;
+          }else if(!directionLeft && transform > -200){
+            transform = e.deltaX;
+          }
+
+          if(transform < -200) {
+            transform = -200;
+            directionLeft = false;
+          }else if(transform > 0){
+            transform = 0;
+            directionLeft = true;
+          }
+          e.target.style.transition = 'transform 0s ease-out';
+          e.target.style.transform = 'translateX('+transform+'px)';
         });
-        manager.on('swiperight', function (e) {
-          e.target.className = 'swipe-content';
+        manager.on('panend', function (e) {
+          e.target.style.transition = null;
+          if(transform <= -80 ) {
+            e.target.style.transform = 'translateX(-200px)';
+          }else if(transform > -80){
+            e.target.style.transform = null;
+          }
         });
       }
     }
   });
 
 })(window.application || (window.application = {}));
-
