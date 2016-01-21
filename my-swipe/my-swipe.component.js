@@ -36,7 +36,6 @@
         position: absolute;
         top: 0px;
         right: 0px;
-        width: 80%;
         height: 100%;
       }
     `]
@@ -44,6 +43,8 @@
   .Class({
     constructor: function() {},
     ngAfterViewInit: function () {
+
+      var actionSection = document.getElementsByClassName('swipe-action-section')[0].offsetWidth;
       var elements = document.getElementsByClassName('swipe-content');
       var manager;
       for (var i = 0; i < elements.length; i++) {
@@ -54,31 +55,31 @@
         });
 
         var transform = 0;
+        var defaultTransform = 0;
         var directionLeft = true;
 
         manager.on('pan', function (e) {
-          if(directionLeft){
-            transform = -200 + e.deltaX;
-          }else if(!directionLeft){
-            transform = e.deltaX;
-          }
+          if(e.target.className == 'swipe-content'){
+            transform = defaultTransform + e.deltaX;
 
-          if(transform < -200) {
-            transform = -200;
-            directionLeft = false;
-          }else if(transform > 0){
-            transform = 0;
-            directionLeft = true;
+            if(transform > 0){
+              transform = 0;
+            }
+            e.target.style.transition = 'transform 0s ease-out';
+            e.target.style.transform = 'translateX('+transform+'px)';  
           }
-          e.target.style.transition = 'transform 0s ease-out';
-          e.target.style.transform = 'translateX('+transform+'px)';
         });
         manager.on('panend', function (e) {
-          e.target.style.transition = null;
-          if(transform <= -80 ) {
-            e.target.style.transform = 'translateX(-200px)';
-          }else if(transform > -80){
-            e.target.style.transform = null;
+          if(e.target.className == 'swipe-content'){
+            e.target.style.transition = null;
+            
+            if(transform <= -(actionSection / 2 ) ) {
+              defaultTransform = -actionSection;
+              e.target.style.transform = 'translateX(-'+actionSection+'px)';
+            }else if(transform > -(actionSection / 2)){
+              e.target.style.transform = null;
+              defaultTransform = 0;
+            }
           }
         });
       }
