@@ -3,10 +3,8 @@
     selector: 'my-swipe'
   })
   .Class({
-    constructor: [ng.core.ElementRef, ng.core.Renderer, function(ElementRef, Renderer) {
-      this.ElementRef = ElementRef;
-      console.log(ElementRef.nativeElement)
-      this.Renderer = Renderer;
+    constructor: [ng.core.ElementRef, function(elementRef) {
+      this.elementRef = elementRef;
     }],
     ngAfterViewInit: function () {
       var manager, transform, defaultTransform, element;
@@ -14,7 +12,7 @@
       transform = 0;
       defaultTransform = 0;
       if(widthActionSection){
-        manager = new Hammer.Manager(this.ElementRef.nativeElement, {
+        manager = new Hammer.Manager(this.elementRef.nativeElement, {
           recognizers: [
               [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
           ]
