@@ -2,7 +2,7 @@
   application.myApp = ng.core.Component({
     selector: 'my-app',
     template: `
-      <my-swipe class="my-swipe">
+      <my-swipe>
         <item *ngFor="#item of items, #i=index">
           <div class ="swipe-content">
             Swipe to left {{i}}
