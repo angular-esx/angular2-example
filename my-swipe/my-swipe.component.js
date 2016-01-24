@@ -4,15 +4,18 @@
   })
   .Class({
     constructor: [ng.core.ElementRef, function(elementRef) {
-      this.elementRef = elementRef;
+      this.nativeElement = elementRef.nativeElement;
     }],
     ngAfterViewInit: function () {
       var manager, transform, defaultTransform, element;
-      var widthActionSection = document.getElementsByClassName('swipe-actions')[0] && document.getElementsByClassName('swipe-actions')[0].offsetWidth;
+      var swipeLeft = this.nativeElement.getElementsByClassName('swipe-left')[0] 
+        && this.nativeElement.getElementsByClassName('swipe-left')[0].offsetWidth;
+      var swipeRight = this.nativeElement.getElementsByClassName('swipe-right')[0] 
+        && this.nativeElement.getElementsByClassName('swipe-right')[0].offsetWidth;
       transform = 0;
       defaultTransform = 0;
-      if(widthActionSection){
-        manager = new Hammer.Manager(this.elementRef.nativeElement, {
+      if(swipeLeft || swipeRight){
+        manager = new Hammer.Manager(this.nativeElement, {
           recognizers: [
               [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
           ]
@@ -24,24 +27,31 @@
           }
         });
         manager.on('pan', function (e) {
-          transform = defaultTransform + e.deltaX;
-          if(transform > 0){
-            transform = 0;
+          if(swipeLeft && swipeRight){
+            transform = defaultTransform + e.deltaX;
+          }else if(swipeLeft){
+            transform = defaultTransform + e.deltaX > 0 ? 0 : defaultTransform + e.deltaX;
+          }else if(swipeRight){
+            transform = defaultTransform + e.deltaX < 0 ? 0 : defaultTransform + e.deltaX;
           }
+
           element.style.transition = 'transform 0s ease-out';
-          element.style.transform = 'translateX('+transform+'px)';          
+          element.style.transform = 'translateX('+transform+'px)';
         });
         manager.on('panend', function (e) {
           element.style.transition = null;
-          if(transform <= -(widthActionSection / 2 ) ) {
-            element.style.transform = 'translateX(-'+widthActionSection+'px)';
-          }else if(transform > -(widthActionSection / 2)){
+
+          if(swipeRight && transform >= (swipeRight / 2)) {
+            element.style.transform = 'translateX('+swipeRight+'px)';
+          }else if(swipeRight && transform < (swipeRight / 2) && transform >= 0) {
             element.style.transform = null;
+          }else if(swipeLeft && transform < 0 && (transform > -swipeLeft / 2)) {
+            element.style.transform = null;
+          }if(swipeLeft && transform <= -(swipeLeft / 2)) {
+            element.style.transform = 'translateX(-'+swipeLeft+'px)';
           }
         });
-        
       }
     }
   });
-
 })(window.application || (window.application = {}));
