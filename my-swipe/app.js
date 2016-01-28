@@ -51,6 +51,12 @@
     },
     clickOnAction: function () {
       alert('You have just clicked on action');
+    },
+    onSwiping: function (event) {
+      console.log(event.type, event.direction);
+    },
+    onSwiped: function (event) {
+      console.log(event.type, event.direction);
     }
   });
 })(window.application || (window.application = {}));

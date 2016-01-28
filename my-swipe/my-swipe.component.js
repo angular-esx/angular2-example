@@ -1,17 +1,26 @@
 (function (application) {
   (application.components || (application.components = {})).mySwipe = ng.core.Directive({
-    selector: 'my-swipe'
+    selector: 'my-swipe',
+    events: ['swiping', 'swiped']
   })
   .Class({
     constructor: [ng.core.ElementRef, function(elementRef) {
       this.nativeElement = elementRef.nativeElement;
+      this.swiping = new ng.core.EventEmitter();
+      this.swiped = new ng.core.EventEmitter();
     }],
     ngAfterViewInit: function () {
-      var manager, transform, defaultTransform, element;
+      var SWIPE_TO_LEFT_DIRECTION = 'swipeToLeft',
+          SWIPE_TO_RIGHT_DIRECTION = 'swipeToRight';
+
+      var self = this,
+          manager, transform, defaultTransform, element;
+
       var swipeLeft = this.nativeElement.getElementsByClassName('swipe-left')[0] 
         && this.nativeElement.getElementsByClassName('swipe-left')[0].offsetWidth;
       var swipeRight = this.nativeElement.getElementsByClassName('swipe-right')[0] 
         && this.nativeElement.getElementsByClassName('swipe-right')[0].offsetWidth;
+
       transform = 0;
       defaultTransform = 0;
       if(swipeLeft || swipeRight){
@@ -21,7 +30,13 @@
           ]
         });
         manager.on('panstart', function (e) {
-          if(e.target.className == 'swipe-content'){
+          if (e.target.className == 'swipe-content') {
+            self.swiping.next({
+              type: 'swiping',
+              direction: e.additionalEvent == 'panleft' ? SWIPE_TO_LEFT_DIRECTION : SWIPE_TO_RIGHT_DIRECTION,
+              target: e.target
+            });
+
             element = e.target;
             defaultTransform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
           }
@@ -50,6 +65,12 @@
           }if(swipeLeft && transform <= -(swipeLeft / 2)) {
             element.style.transform = 'translateX(-'+swipeLeft+'px)';
           }
+
+          self.swiped.next({
+            type: 'swiped',
+            direction: e.additionalEvent == 'panleft' ? SWIPE_TO_LEFT_DIRECTION : SWIPE_TO_RIGHT_DIRECTION,
+            target: e.target
+          });
         });
       }
     }
