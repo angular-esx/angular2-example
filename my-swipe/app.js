@@ -7,7 +7,7 @@
         height: 100px;
         margin: 0px;
         width: 60px;
-      }     
+      }
       item{
         width: 100%;
         height: 100px;
