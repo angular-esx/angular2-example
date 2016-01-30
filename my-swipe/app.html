@@ -1,16 +1,4 @@
-<my-swipe (swiping)="onSwiping($event)" (swiped)="onSwiped($event)">
-  <item>
-    <div class ="swipe-content">
-      Swipe to left
-    </div>
-    <div class="swipe-left">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">Edit</button>
-        <button type="button" class="btn btn-default">Delete</button>
-      </div>
-    </div>
-  </item>
-
+<my-swipe swipe-id="swipe01" (swiping)="onSwiping($event)" (swiped)="onSwiped($event)">
   <item>
     <div class ="swipe-content">
       Swipe to left
@@ -24,18 +12,7 @@
   </item>
 </my-swipe>
 
-<my-swipe>
-  <item>
-    <div class ="swipe-content">
-      Swipe to right
-    </div>
-    <div class="swipe-right">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">Edit</button>
-        <button type="button" class="btn btn-default">Delete</button>
-      </div>
-    </div>
-  </item>
+<my-swipe swipe-id="swipe02">
   <item>
     <div class ="swipe-content">
       Swipe to right
@@ -49,24 +26,7 @@
   </item>
 </my-swipe>
 
-<my-swipe>
-  <item>
-    <div class ="swipe-content">
-      Swipe to left/right
-    </div>
-    <div class="swipe-left">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">Edit</button>
-        <button type="button" class="btn btn-default">Delete</button>
-      </div>
-    </div>
-    <div class="swipe-right">
-      <div class="btn-group" role="group">
-        <button type="button" class="btn btn-default">Edit</button>
-        <button type="button" class="btn btn-default">Delete</button>
-      </div>
-    </div>
-  </item>
+<my-swipe swipe-id="swipe03">
   <item>
     <div class ="swipe-content">
       Swipe to left/right
@@ -85,3 +45,8 @@
     </div>
   </item>
 </my-swipe>
+
+<hr/>
+<button (click)="swipe('swipe01')" style="width: 250px;">Make element 01 swipe to left</button>
+<button (click)="swipe('swipe02')" style="width: 250px;">Make element 02 swipe to right</button>
+<button (click)="swipe()" style="width: 250px;">Make all elements swipe</button>

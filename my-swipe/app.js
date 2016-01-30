@@ -40,7 +40,7 @@
         border-radius: 0px;
       }
     `],
-    directives: [application.components.mySwipe]
+    directives: [application.components.mySwipe],
   })
   .Class({
     constructor: function () {
