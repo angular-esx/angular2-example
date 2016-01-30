@@ -17,15 +17,17 @@
       if(swipeLeft || swipeRight){
         manager = new Hammer.Manager(this.nativeElement, {
           recognizers: [
-              [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }],
+              [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }]
           ]
         });
+
         manager.on('panstart', function (e) {
           if(e.target.className == 'swipe-content'){
             element = e.target;
             defaultTransform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
           }
         });
+
         manager.on('pan', function (e) {
           if(swipeLeft && swipeRight){
             transform = defaultTransform + e.deltaX;
@@ -38,6 +40,7 @@
           element.style.transition = 'transform 0s ease-out';
           element.style.transform = 'translateX('+transform+'px)';
         });
+
         manager.on('panend', function (e) {
           element.style.transition = null;
 
@@ -49,6 +52,36 @@
             element.style.transform = null;
           }if(swipeLeft && transform <= -(swipeLeft / 2)) {
             element.style.transform = 'translateX(-'+swipeLeft+'px)';
+          }
+        });
+
+        manager = new Hammer.Manager(this.nativeElement, {
+          recognizers: [
+              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: 0 }]
+          ]
+        });
+
+        manager.on('swipeleft', function (e) {
+          if(e.deltaTime < 300 && e.target.className == 'swipe-content'){
+            element = e.target;
+            transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
+            if(swipeLeft && transform <= 0) {
+              element.style.transform = 'translateX(-'+swipeLeft+'px)';
+            }else if(swipeRight && transform > 0){
+              element.style.transform = null;
+            }
+          }
+        });
+
+        manager.on('swiperight', function (e) {
+          if(e.deltaTime < 300 && e.target.className == 'swipe-content'){
+            element = e.target;
+            transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
+            if(swipeRight && transform >= 0) {
+              element.style.transform = 'translateX('+swipeRight+'px)';
+            }else if(swipeLeft && transform < 0) {
+              element.style.transform = null;
+            }
           }
         });
       }
