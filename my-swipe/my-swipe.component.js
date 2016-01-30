@@ -32,7 +32,6 @@
 
         manager.on('panstart', function (e) {
           element = getParentElement(e.target, 'swipe-content');
-          console.log(element);
           if (element) {
             self.swiping.next({
               type: 'swiping',

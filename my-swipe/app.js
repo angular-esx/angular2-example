@@ -4,25 +4,35 @@
     templateUrl: 'app.html',
     styles: [`
       button {
-        height: 50px;
+        height: 100px;
         margin: 0px;
         width: 60px;
-      }
+      }     
       item{
         width: 100%;
-        height: 50px;
+        height: 100px;
         position: relative;
         display: inline-block;
         overflow: hidden;
       }
       .swipe-content{
-        background-color: #0275d8;
-        color: white;
+        background-color: #FFF;
+        color: #000;
         width: 100%;
         height: 100%;
         position: relative;
         z-index: 100;
         transition: transform 0.3s ease-out;
+        border-top: 1px solid #eee;
+      }
+      .content-wrapper {
+        padding: 10px 0 10px 10px;
+      }
+      .content-title {
+        font-size: 16px;
+      }
+      .content-text {
+        color: #757575;
       }
       .swipe-left{
         position: absolute;
