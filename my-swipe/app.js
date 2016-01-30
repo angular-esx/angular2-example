@@ -41,14 +41,12 @@
       }
     `],
     directives: [application.components.mySwipe],
+    providers: [application.services.mySwipeService]
   })
   .Class({
-    constructor: function () {
-      this.items = [];
-      for(var i = 0; i < 10; i++){
-        this.items.push({});
-      }
-    },
+    constructor: [application.services.mySwipeService, function (mySwipeService) {
+      this.swipeService = mySwipeService;
+    }],
     clickOnAction: function () {
       alert('You have just clicked on action');
     },
@@ -57,6 +55,9 @@
     },
     onSwiped: function (event) {
       console.log(event.type, event.direction);
+    },
+    swipe: function (swipeId) {
+      this.swipeService.swipe(swipeId);
     }
   });
 })(window.application || (window.application = {}));
