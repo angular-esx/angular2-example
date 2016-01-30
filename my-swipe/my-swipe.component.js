@@ -31,49 +31,56 @@
         });
 
         manager.on('panstart', function (e) {
-          if (e.target.className == 'swipe-content') {
+          element = getParentElement(e.target, 'swipe-content');
+          console.log(element);
+          if (element) {
             self.swiping.next({
               type: 'swiping',
               direction: e.additionalEvent == 'panleft' ? SWIPE_TO_LEFT_DIRECTION : SWIPE_TO_RIGHT_DIRECTION,
               target: e.target
             });
 
-            element = e.target;
             defaultTransform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
           }
         });
 
         manager.on('pan', function (e) {
-          if(swipeLeft && swipeRight){
-            transform = defaultTransform + e.deltaX;
-          }else if(swipeLeft){
-            transform = defaultTransform + e.deltaX > 0 ? 0 : defaultTransform + e.deltaX;
-          }else if(swipeRight){
-            transform = defaultTransform + e.deltaX < 0 ? 0 : defaultTransform + e.deltaX;
-          }
+          if(element){
+            if(swipeLeft && swipeRight){
+              transform = defaultTransform + e.deltaX;
+            }else if(swipeLeft){
+              transform = defaultTransform + e.deltaX > 0 ? 0 : defaultTransform + e.deltaX;
+            }else if(swipeRight){
+              transform = defaultTransform + e.deltaX < 0 ? 0 : defaultTransform + e.deltaX;
+            }
 
-          element.style.transition = 'transform 0s ease-out';
-          element.style.transform = 'translateX('+transform+'px)';
+            element.style.transition = 'transform 0s ease-out';
+            element.style.transform = 'translateX('+transform+'px)';
+          }
         });
 
         manager.on('panend', function (e) {
-          element.style.transition = null;
+          if(element){
+            element.style.transition = null;
 
-          if(swipeRight && transform >= (swipeRight / 2)) {
-            element.style.transform = 'translateX('+swipeRight+'px)';
-          }else if(swipeRight && transform < (swipeRight / 2) && transform >= 0) {
-            element.style.transform = null;
-          }else if(swipeLeft && transform < 0 && (transform > -swipeLeft / 2)) {
-            element.style.transform = null;
-          }if(swipeLeft && transform <= -(swipeLeft / 2)) {
-            element.style.transform = 'translateX(-'+swipeLeft+'px)';
+            if(swipeRight && transform >= (swipeRight / 2)) {
+              element.style.transform = 'translateX('+swipeRight+'px)';
+            }else if(swipeRight && transform < (swipeRight / 2) && transform >= 0) {
+              element.style.transform = null;
+            }else if(swipeLeft && transform < 0 && (transform > -swipeLeft / 2)) {
+              element.style.transform = null;
+            }if(swipeLeft && transform <= -(swipeLeft / 2)) {
+              element.style.transform = 'translateX(-'+swipeLeft+'px)';
+            }
+
+            self.swiped.next({
+              type: 'swiped',
+              direction: e.additionalEvent == 'panleft' ? SWIPE_TO_LEFT_DIRECTION : SWIPE_TO_RIGHT_DIRECTION,
+              target: e.target
+            });
           }
 
-          self.swiped.next({
-            type: 'swiped',
-            direction: e.additionalEvent == 'panleft' ? SWIPE_TO_LEFT_DIRECTION : SWIPE_TO_RIGHT_DIRECTION,
-            target: e.target
-          });
+          element = null;
         });
 
         manager = new Hammer.Manager(this.nativeElement, {
@@ -83,8 +90,8 @@
         });
 
         manager.on('swipeleft', function (e) {
-          if(e.deltaTime < 300 && e.target.className == 'swipe-content'){
-            element = e.target;
+          element = getParentElement(e.target, 'swipe-content');
+          if(e.deltaTime < 300 && element){
             transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
             if(swipeLeft && transform <= 0) {
               element.style.transform = 'translateX(-'+swipeLeft+'px)';
@@ -92,11 +99,12 @@
               element.style.transform = null;
             }
           }
+          element = null;
         });
 
         manager.on('swiperight', function (e) {
-          if(e.deltaTime < 300 && e.target.className == 'swipe-content'){
-            element = e.target;
+          element = getParentElement(e.target, 'swipe-content');
+          if(e.deltaTime < 300 && element){
             transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
             if(swipeRight && transform >= 0) {
               element.style.transform = 'translateX('+swipeRight+'px)';
@@ -104,7 +112,26 @@
               element.style.transform = null;
             }
           }
+          element = null;
         });
+      }
+
+      function getParentElement(element, parentClass){
+        if(element.className && element.className.indexOf(parentClass) >= 0){
+          return element;
+        }
+
+        var p = element.parentNode;
+        
+        while (p !== null) {
+          var o = p;
+          if(o.className && o.className.indexOf(parentClass) >= 0){
+            return o;
+          }
+          p = o.parentNode;
+        }
+
+        return null;
       }
     }
   });
