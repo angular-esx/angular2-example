@@ -15,6 +15,9 @@
         display: inline-block;
         overflow: hidden;
       }
+      .item {
+        border-top: 1px solid #eee;
+      }
       .swipe-content{
         background-color: #FFF;
         color: #000;
@@ -23,7 +26,6 @@
         position: relative;
         z-index: 100;
         transition: transform 0.3s ease-out;
-        border-top: 1px solid #eee;
       }
       .content-wrapper {
         padding: 10px 0 10px 10px;
