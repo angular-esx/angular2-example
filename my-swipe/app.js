@@ -52,15 +52,13 @@
         border-radius: 0px;
       }
     `],
-    directives: [application.components.mySwipe]
+    directives: [application.ngxBootstrap.ngxComponents.ngxSwipe],
+    providers: [application.ngxBootstrap.ngxServices.ngxSwipeService]
   })
   .Class({
-    constructor: function () {
-      this.items = [];
-      for(var i = 0; i < 10; i++){
-        this.items.push({});
-      }
-    },
+    constructor: [application.ngxBootstrap.ngxServices.ngxSwipeService, function (ngxSwipeService) {
+      this.swipeService = ngxSwipeService;
+    }],
     clickOnAction: function () {
       alert('You have just clicked on action');
     },
@@ -69,6 +67,11 @@
     },
     onSwiped: function (event) {
       console.log(event.type, event.direction);
+    },
+    swipe: function (swipeId) {
+      this.swipeService.swipe(swipeId);
     }
   });
-})(window.application || (window.application = {}));
+})(window.application = {
+  ngxBootstrap: window.ngxBootstrap
+});
