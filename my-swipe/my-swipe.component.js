@@ -1,7 +1,8 @@
 (function (application) {
   (application.components || (application.components = {})).mySwipe = ng.core.Directive({
     selector: 'my-swipe',
-    events: ['swiping', 'swiped']
+    events: ['swiping', 'swiped'],
+    inputs: ['threshold', 'velocity', 'distance', 'distanceLeft', 'distanceRight', 'deltaTime']
   })
   .Class({
     constructor: [ng.core.ElementRef, function(elementRef) {
@@ -21,12 +22,26 @@
       var swipeRight = this.nativeElement.getElementsByClassName('swipe-right')[0] 
         && this.nativeElement.getElementsByClassName('swipe-right')[0].offsetWidth;
 
+      // Minimal pan distance required before recognizing.
+      var threshold = this.threshold || 0;
+      // Minimal velocity required before recognizing, unit is in px per ms.
+      var velocity = this.velocity || 0.65;
+      // Minimal distance to pan left/right, unit is px
+      var distance = this.distance;
+      // Minimal distance to pan left, unit is px
+      var distanceLeft = this.distanceLeft || distance || (swipeLeft && swipeLeft/2);
+      // Minimal distance to pan right, unit is px
+      var distanceRight = this.distanceRight || distance || (swipeRight && swipeRight/2);
+      // maxtime to active swipe action
+      var deltaTime = this.deltaTime || 300;
+
       transform = 0;
       defaultTransform = 0;
+
       if(swipeLeft || swipeRight){
         manager = new Hammer.Manager(this.nativeElement, {
           recognizers: [
-              [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL }]
+              [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: threshold }]
           ]
         });
 
@@ -62,13 +77,13 @@
           if(element){
             element.style.transition = null;
 
-            if(swipeRight && transform >= (swipeRight / 2)) {
+            if(swipeRight && transform >= distanceRight) {
               element.style.transform = 'translateX('+swipeRight+'px)';
-            }else if(swipeRight && transform < (swipeRight / 2) && transform >= 0) {
+            }else if(swipeRight && transform < distanceRight && transform >= 0) {
               element.style.transform = null;
-            }else if(swipeLeft && transform < 0 && (transform > -swipeLeft / 2)) {
+            }else if(swipeLeft && transform < 0 && (transform > -distanceLeft)) {
               element.style.transform = null;
-            }if(swipeLeft && transform <= -(swipeLeft / 2)) {
+            }if(swipeLeft && transform <= -distanceLeft) {
               element.style.transform = 'translateX(-'+swipeLeft+'px)';
             }
 
@@ -84,13 +99,13 @@
 
         manager = new Hammer.Manager(this.nativeElement, {
           recognizers: [
-              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: 0 }]
+              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: threshold, velocity: velocity }]
           ]
         });
 
         manager.on('swipeleft', function (e) {
           element = getParentElement(e.target, 'swipe-content');
-          if(e.deltaTime < 300 && element){
+          if(e.deltaTime < deltaTime && element){
             transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
             if(swipeLeft && transform <= 0) {
               element.style.transform = 'translateX(-'+swipeLeft+'px)';
@@ -103,7 +118,7 @@
 
         manager.on('swiperight', function (e) {
           element = getParentElement(e.target, 'swipe-content');
-          if(e.deltaTime < 300 && element){
+          if(e.deltaTime < deltaTime && element){
             transform = parseInt(element.style.transform.split(/[(px)]/)[1]) || 0;
             if(swipeRight && transform >= 0) {
               element.style.transform = 'translateX('+swipeRight+'px)';
