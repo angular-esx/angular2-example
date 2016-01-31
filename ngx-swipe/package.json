@@ -1,5 +1,5 @@
 {
-  "name": "swipe",
+  "name": "ngxSwipe",
   "version": "0.0.1",
   "scripts": {
     "start": "npm run lite",
