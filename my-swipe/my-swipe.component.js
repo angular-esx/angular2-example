@@ -22,27 +22,27 @@
         this.swiped = new ng.core.EventEmitter();
       }],
       ngAfterViewInit: function () {
-        var _self = this, 
+        var _self = this,
             _manager,
             _element,
             _swipeLeft = _getSwipeLeft(this.nativeElement),
             _swipeRight = _getSwipeRight(this.nativeElement),
             _defaultTransform = 0,
             _transform = 0
-            // Minimal pan distance required before recognizing.
-            _threshold = this.threshold || 0,
-            // Minimal velocity required before recognizing, unit is in px per ms.
-            _velocity = this.velocity || 0.65,
-            // Minimal distance to pan left/right, unit is px
-            _distance = this.distance,
-            // Minimal distance to pan left, unit is px
-            _distanceLeft = this.distanceLeft || _distance || (_swipeLeft && _swipeLeft / 2),
-            // Minimal distance to pan right, unit is px
-            _distanceRight = this.distanceRight || _distance || (_swipeRight && _swipeRight / 2),
-            // maxtime to active swipe action
-            _deltaTime = this.deltaTime || 300;
+        // Minimal pan distance required before recognizing.
+        _threshold = this.threshold || 0,
+        // Minimal velocity required before recognizing, unit is in px per ms.
+        _velocity = this.velocity || 0.65,
+        // Minimal distance to pan left/right, unit is px
+        _distance = this.distance,
+        // Minimal distance to pan left, unit is px
+        _distanceLeft = this.distanceLeft || _distance || (_swipeLeft && _swipeLeft / 2),
+        // Minimal distance to pan right, unit is px
+        _distanceRight = this.distanceRight || _distance || (_swipeRight && _swipeRight / 2),
+        // maxtime to active swipe action
+        _deltaTime = this.deltaTime || 300;
 
-        if(_swipeLeft || _swipeRight){
+        if (_swipeLeft || _swipeRight) {
           _manager = new Hammer.Manager(this.nativeElement, {
             recognizers: [
               [Hammer.Pan, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: _threshold }]
@@ -59,14 +59,14 @@
           });
 
           _manager.on('pan', function (e) {
-            if(_element){
-              if(_swipeLeft && _swipeRight){
+            if (_element) {
+              if (_swipeLeft && _swipeRight) {
                 _transform = _defaultTransform + e.deltaX;
               }
-              else if(_swipeLeft){
+              else if (_swipeLeft) {
                 _transform = _defaultTransform + e.deltaX > 0 ? 0 : _defaultTransform + e.deltaX;
               }
-              else if(_swipeRight){
+              else if (_swipeRight) {
                 _transform = _defaultTransform + e.deltaX < 0 ? 0 : _defaultTransform + e.deltaX;
               }
 
@@ -76,7 +76,7 @@
           });
 
           _manager.on('panend', function (e) {
-            if(_element){
+            if (_element) {
               _element.style.transition = null;
 
               if (_swipeRight && _transform >= _distanceRight) {
@@ -107,13 +107,13 @@
           _manager.on('swipeleft', function (e) {
             _element = _getSwipeContent(e.target, _SWIPE_CONTENT_CLASS);
 
-            if(_element && e.deltaTime < _deltaTime){
+            if (_element && e.deltaTime < _deltaTime) {
               _transform = _getTransformValue(_element);
-              
-              if(_swipeLeft && _transform <= 0) {
+
+              if (_swipeLeft && _transform <= 0) {
                 _element.style.transform = _translateX(-_swipeLeft);
               }
-              else if(_swipeRight && _transform > 0){
+              else if (_swipeRight && _transform > 0) {
                 _element.style.transform = null;
               }
             }
@@ -122,13 +122,13 @@
           _manager.on('swiperight', function (e) {
             _element = _getSwipeContent(e.target, _SWIPE_CONTENT_CLASS);
 
-            if(_element && e.deltaTime < _deltaTime){
+            if (_element && e.deltaTime < _deltaTime) {
               _transform = _getTransformValue(_element);
 
-              if(_swipeRight && _transform >= 0) {
+              if (_swipeRight && _transform >= 0) {
                 _element.style.transform = _translateX(_swipeRight);
               }
-              else if(_swipeLeft && _transform < 0) {
+              else if (_swipeLeft && _transform < 0) {
                 _element.style.transform = null;
               }
             }
@@ -145,7 +145,7 @@
          function (error) {
            console.error('mySwipeService.swipe', error);
          });
-      
+
       },
       swipe: function () {
         var _element = this.nativeElement.getElementsByClassName(_SWIPE_CONTENT_CLASS)[0],
@@ -157,7 +157,7 @@
             _swipeRight = _getSwipeRight(this.nativeElement),
             _transform = _getTransformValue(_element),
             _translateXString;
-        
+
         if (_element && (_swipeLeft || _swipeRight)) {
           if (_swipeLeft) {
             _translateXString = _transform ? null : _translateX(-_swipeLeft);
@@ -175,7 +175,7 @@
 
           _emitSwipedEvent(this, _event);
         }
-      }      
+      }
     };
 
     function _emitSwipingEvent(context, event) {
