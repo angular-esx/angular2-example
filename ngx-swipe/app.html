@@ -1,0 +1,17 @@
+<ngx-swipe (swiping)="onSwiping($event)" (swiped)="onSwiped($event)" *ngFor="#item of items">
+  <item class="item">
+    <div class="swipe-content">
+      <div class="content-wrapper">
+        <div class="content-title">{{item.title}}</div>
+        <div class="content-text">{{item.description}}</div>
+      </div>
+    </div>
+    <div class="swipe-left">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-warning button-edit" (click)="edit()">Edit</button>
+        <button type="button" class="btn btn-danger button-delete" (click)="delete()">Delete</button>
+      </div>
+    </div>
+  </item>
+</ngx-swipe>
+

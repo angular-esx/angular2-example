@@ -100,7 +100,7 @@
 
           _manager = new Hammer.Manager(this.nativeElement, {
             recognizers: [
-              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: threshold, velocity: velocity }]
+              [Hammer.Swipe, { direction: Hammer.DIRECTION_HORIZONTAL, threshold: _threshold, velocity: _velocity }]
             ]
           });
 
