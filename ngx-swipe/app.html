@@ -1,5 +1,5 @@
-<ngx-swipe (swiping)="onSwiping($event)" (swiped)="onSwiped($event)" *ngFor="#item of items">
-  <item class="item">
+<ngx-swipe (swiping)="onSwiping($event)" (swiped)="onSwiped($event)">
+  <item class="item" *ngFor="#item of items">
     <div class="swipe-content">
       <div class="content-wrapper">
         <div class="content-title">{{item.title}}</div>

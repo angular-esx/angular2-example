@@ -5,14 +5,20 @@
     inputs: ['threshold', 'velocity', 'distance'],
     events: ['swiping', 'swiped']
   })
-  .Class((function () {
-    var _SWIPE_LEFT_CLASS = 'swipe-left',
-        _SWIPE_RIGHT_CLASS = 'swipe-right',
-        _SWIPE_CONTENT_CLASS = 'swipe-content',
-        _SWIPING_TYPE = 'swiping',
-        _SWIPED_TYPE = 'swiped',
-        _SWIPE_TO_LEFT_DIRECTION = 'swipeToLeft',
-        _SWIPE_TO_RIGHT_DIRECTION = 'swipeToRight';
+  .Class(swipe());
+
+  function swipe() {
+    var _SWIPE_LEFT_CLASS, _SWIPE_RIGHT_CLASS, _SWIPE_CONTENT_CLASS, 
+      _SWIPING_TYPE, _SWIPED_TYPE, _SWIPE_TO_LEFT_DIRECTION, 
+      _SWIPE_TO_RIGHT_DIRECTION;
+
+    _SWIPE_LEFT_CLASS = 'swipe-left';
+    _SWIPE_RIGHT_CLASS = 'swipe-right';
+    _SWIPE_CONTENT_CLASS = 'swipe-content';
+    _SWIPING_TYPE = 'swiping';
+    _SWIPED_TYPE = 'swiped';
+    _SWIPE_TO_LEFT_DIRECTION = 'swipeToLeft',
+    _SWIPE_TO_RIGHT_DIRECTION = 'swipeToRight';
 
     return {
       constructor: [ngxBootstrap.ngxServices.ngxSwipeService, ng.core.ElementRef, function (ngxSwipeService, elementRef) {
@@ -22,23 +28,25 @@
         this.swiped = new ng.core.EventEmitter();
       }],
       ngAfterViewInit: function () {
-        var _self = this,
-            _manager,
-            _element,
-            _swipeLeft = _getSwipeLeft(this.nativeElement),
-            _swipeRight = _getSwipeRight(this.nativeElement),
-            _defaultTransform = 0,
-            _transform = 0
+        var _self, _manager, _element, _swipeLeft, _swipeRight,
+            _defaultTransform, _transform, _threshold, _velocity,
+            _distance, _distanceLeft, _distanceRight, _deltaTime;
+
+        _self = this;
+        _swipeLeft = _getSwipeLeft(this.nativeElement);
+        _swipeRight = _getSwipeRight(this.nativeElement);
+        _defaultTransform = 0;
+        _transform = 0;
         // Minimal pan distance required before recognizing.
-        _threshold = this.threshold || 0,
+        _threshold = this.threshold || 0;
         // Minimal velocity required before recognizing, unit is in px per ms.
-        _velocity = this.velocity || 0.65,
+        _velocity = this.velocity || 0.65;
         // Minimal distance to pan left/right, unit is px
-        _distance = this.distance,
+        _distance = this.distance;
         // Minimal distance to pan left, unit is px
-        _distanceLeft = this.distanceLeft || _distance || (_swipeLeft && _swipeLeft / 2),
+        _distanceLeft = this.distanceLeft || _distance || (_swipeLeft && _swipeLeft / 2);
         // Minimal distance to pan right, unit is px
-        _distanceRight = this.distanceRight || _distance || (_swipeRight && _swipeRight / 2),
+        _distanceRight = this.distanceRight || _distance || (_swipeRight && _swipeRight / 2);
         // maxtime to active swipe action
         _deltaTime = this.deltaTime || 300;
 
@@ -95,8 +103,6 @@
               _emitSwipedEvent(_self, e);
             }
           });
-
-
 
           _manager = new Hammer.Manager(this.nativeElement, {
             recognizers: [
@@ -195,28 +201,34 @@
     };
 
     function _getSwipeContent(element, parentClass) {
-      if (element.className && element.className.indexOf(parentClass) > -1) {
+      if (hasClass(element, parentClass)) {
         return element;
       }
 
-      var currentNode, parentNode = element.parentNode;
+      var currentNode, parentNode;
+
+      parentNode = element.parentNode;
       while (parentNode !== null) {
         currentNode = parentNode;
-        if (currentNode.className && currentNode.className.indexOf(parentClass) > -1) {
+        if (hasClass(currentNode, parentClass)) {
           return currentNode;
         }
         parentNode = currentNode.parentNode;
       }
 
       return null;
+
+      function hasClass(el, className){
+        return el.className && el.className.indexOf(className) > -1;
+      }
     };
 
-    function _getSwipeLeft(nativeElement) {
-      return (nativeElement.getElementsByClassName(_SWIPE_LEFT_CLASS)[0] || {}).offsetWidth;
+    function _getSwipeLeft(element) {
+      return (element.getElementsByClassName(_SWIPE_LEFT_CLASS)[0] || {}).offsetWidth;
     };
 
-    function _getSwipeRight(nativeElement) {
-      return (nativeElement.getElementsByClassName(_SWIPE_RIGHT_CLASS)[0] || {}).offsetWidth;
+    function _getSwipeRight(element) {
+      return (element.getElementsByClassName(_SWIPE_RIGHT_CLASS)[0] || {}).offsetWidth;
     };
 
     function _getTransformValue(element) {
@@ -226,6 +238,5 @@
     function _translateX(value) {
       return 'translateX(' + value + 'px)';
     };
-
-  })());
+  }
 })(window.ngxBootstrap || (window.ngxBootstrap = {}));
